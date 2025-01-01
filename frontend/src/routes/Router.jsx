@@ -9,13 +9,17 @@ import Register from "../pages/Register"
 import Layout from "../components/Layout";
 
 const router = createBrowserRouter([
-    {path: "/", element: <Layout/>,children:[
-
-        {path: "edit/id", element: <Edit/>},
-    {path: "create", element: <Create/>},
-    {path: "post/:id", element: <PostDetail/>},
-    {path: "login", element: <Login/>},
-    {path: "register", element: <Register/>},
-    ]},
-])
-export default router;
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        { path: "", element: <Home /> },
+        { path: "edit/:id", element: <Edit /> },
+        { path: "create", element: <Create /> },
+        { path: "post/:id", element: <PostDetail /> },
+        { path: "login", element: <Login /> },
+        { path: "register", element: <Register /> },
+      ],
+    },
+  ]);
+  export default router;
