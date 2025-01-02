@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import PostService from "../services/post.service";
 import { useAuthContext } from "../context/AuthContext";
-import Editor from "../components/Editor";  // ใช้งาน Editor
+import Editor from "../components/Editor"; // ใช้งาน Editor
 import { format } from "date-fns";
 
 const Edit = () => {
@@ -24,14 +24,19 @@ const Edit = () => {
     const fetchPost = async () => {
       try {
         const response = await PostService.getPostById(id);
-        const post = response.data;
-        setPostDetail({
-          title: post.title,
-          summary: post.summary,
-          content: post.content,
-          file: post.cover,
-        });
-        setContent(post.content); // ตั้งค่า content จาก backend
+        if (response.status === 200) {
+          if (user?.id !== response.data.author._id) {
+            navigate("/");
+          }
+          const post = response.data;
+          setPostDetail({
+            title: post.title,
+            summary: post.summary,
+            content: post.content,
+            file: post.cover,
+          });
+          setContent(post.content); // ตั้งค่า content จาก backend}
+        }
       } catch (error) {
         Swal.fire({
           title: "Post Detail",

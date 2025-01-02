@@ -49,8 +49,8 @@ const Create = () => {
             content: "",
             file: null,
           });
-          navigate("/");
         });
+        navigate("/");
       }
     } catch (error) {
       Swal.fire({
@@ -138,7 +138,7 @@ const Create = () => {
             >
               Cancel
             </button>
-            <button type="submit" href="/"  className="btn btn-primary">
+            <button type="submit" href="/" className="btn btn-primary">
               Create Post
             </button>
           </div>

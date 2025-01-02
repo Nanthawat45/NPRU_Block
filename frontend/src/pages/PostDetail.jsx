@@ -3,7 +3,7 @@ import PostService from "../services/post.service";
 import Swal from "sweetalert2";
 import { useParams } from "react-router";
 import { useAuthContext } from "../context/AuthContext";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { useNavigate } from "react-router";
 
 const Post = () => {
@@ -64,7 +64,7 @@ const Post = () => {
             <span className="text-blue-500">@{postDetail.author.username}</span>
           </div>
         </div>
-        {user.id === postDetail.author._id && (
+        {user?.id === postDetail.author._id && (
           <div className="edit-row mb-4 text-center flex items-center justify-center gap-2">
             <a href={`/edit/${postDetail._id}`} className="btn btn-warning">
               Edit Post
