@@ -1,5 +1,19 @@
 const multer = require("multer");
 const path = require("path");
+
+const firebaseConfig = require("../config/Firebase");
+const {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} = require("firebase/storage");
+const { initializeApp } = require("firebase/app");
+
+//init firebase
+const app = initializeApp(firebaseConfig);
+const firebaseStorage = getStorage(app);
+
 //Set Storage engine
 const storage = multer.diskStorage({
   destination: "./uploads/",
@@ -32,4 +46,38 @@ function checkFileType(file, cb) {
   }
 }
 
-module.exports = { upload };
+//upload to firebase storage
+async function uploadToFirebase(req, res, next) {
+  if (!req.file) {
+    // return res.status(400).json({ message: "Image is required!" });
+    next();
+    // return;
+  } else {
+    const storageRef = ref(firebaseStorage, `uploads/${req.file.originalname}`);
+
+    const metadata = {
+      contentType: req.file.mimetype,
+    };
+
+    try {
+      // uploading
+      const snapshot = await uploadBytesResumable(
+        storageRef,
+        req.file.buffer,
+        metadata
+      );
+      req.file.firebaseUrl = await getDownloadURL(snapshot.ref);
+      console.log(req.file.firebaseUrl);
+      next();
+      // return;
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "An error occurred while uploading file to firebase!" ||
+          error.message,
+      });
+    }
+  }
+}
+
+module.exports = { upload, uploadToFirebase };

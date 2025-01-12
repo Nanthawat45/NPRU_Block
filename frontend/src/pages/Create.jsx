@@ -34,9 +34,10 @@ const Create = () => {
       const data = new FormData();
       data.set("title", postDetail.title);
       data.set("summary", postDetail.summary);
-      data.set("content", postDetail.content);
+      data.set("content", content);
       data.set("file", postDetail.file);
       const response = await PostService.createPost(data);
+      console.log(response);
       if (response.status === 200) {
         Swal.fire({
           title: "Create Post",
@@ -67,7 +68,7 @@ const Create = () => {
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Create New Post
         </h2>
-        <form onSubmit={handleSubmit}>
+        <div>
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -138,11 +139,11 @@ const Create = () => {
             >
               Cancel
             </button>
-            <button type="submit" href="/" className="btn btn-primary">
+            <button onClick={handleSubmit} className="btn btn-primary">
               Create Post
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
