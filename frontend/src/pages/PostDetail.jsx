@@ -61,7 +61,7 @@ const Post = () => {
             {format(new Date(postDetail.createdAt), "dd MMMM yyyy HH:mm")}
           </time>
           <div className="author mb-2">
-            <span className="text-blue-500">@{postDetail.author.username}</span>
+            <span className="text-blue-500">@{postDetail.author?.username}</span>
           </div>
         </div>
         {user?.id === postDetail.author._id && (

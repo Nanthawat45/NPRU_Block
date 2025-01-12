@@ -20,7 +20,7 @@ const Post = ({ title, author, summary, cover, createdAt, _id }) => {
           </a>
 
           <p>
-            {author.username} - {createdAt}
+            {author?.username} - {createdAt}
           </p>
           <p>{summary}</p>
         </div>

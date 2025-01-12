@@ -2,6 +2,7 @@ const multer = require("multer");
 const path = require("path");
 
 const firebaseConfig = require("../config/Firebase");
+// console.log(firebaseConfig);
 const {
   getStorage,
   ref,
@@ -10,11 +11,10 @@ const {
 } = require("firebase/storage");
 const { initializeApp } = require("firebase/app");
 
-//init firebase
 const app = initializeApp(firebaseConfig);
 const firebaseStorage = getStorage(app);
 
-//Set Storage engine
+// set storage engine
 const storage = multer.diskStorage({
   destination: "./uploads/",
   filename: (req, file, cb) => {
@@ -25,28 +25,28 @@ const storage = multer.diskStorage({
   },
 });
 
-// Init Upload
+// init upload
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }, //limit 1Mb
+  storage: multer.memoryStorage(),
+  limits: { fieldSize: 1000000 }, // limit 1Mb
   fileFilter: (req, file, cb) => {
-    checkFileType(file, cb); // Check file ext
+    checkFileType(file, cb); // check file existed
   },
 }).single("file"); // input name
 
 function checkFileType(file, cb) {
-  const fileTypes = /jpeg|jpg|png|gif|webp/;
+  const fileTypes = /jpeg||jpg||png||gif||webp/;
   const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = fileTypes.test(file.mimetype);
+  const mimeType = fileTypes.test(file.mimeType);
 
-  if (mimetype && extName) {
+  if (mimeType && extName) {
     return cb(null, true);
   } else {
     cb("Error: Image Only!");
   }
 }
 
-//upload to firebase storage
+// Upload file to Firebase Storage
 async function uploadToFirebase(req, res, next) {
   if (!req.file) {
     // return res.status(400).json({ message: "Image is required!" });
